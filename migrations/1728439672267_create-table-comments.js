@@ -1,12 +1,12 @@
 /* eslint-disable camelcase */
 
 exports.up = (pgm) => {
-  pgm.createTable('threads', {
+  pgm.createTable('comments', {
     id: {
       type: 'VARCHAR(50)',
       primaryKey: true,
     },
-    title: {
+    content: {
       type: 'TEXT',
       notNull: true,
     },
@@ -16,7 +16,7 @@ exports.up = (pgm) => {
     },
   });
 
-  pgm.addConstraint('threads', 'fk_threads.owner_users.id', {
+  pgm.addConstraint('comments', 'fk_comments.owner_users.id', {
     foreignKeys: {
       columns: 'owner',
       references: 'users(id)',
@@ -26,5 +26,5 @@ exports.up = (pgm) => {
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable('threads');
+  pgm.dropTable('comments');
 };
