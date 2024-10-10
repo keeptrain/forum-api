@@ -6,6 +6,10 @@ exports.up = (pgm) => {
       type: 'VARCHAR(50)',
       primaryKey: true,
     },
+    thread_id: {
+      type: 'VARCHAR(50)',
+      notNull: true,
+    },
     content: {
       type: 'TEXT',
       notNull: true,
@@ -13,6 +17,18 @@ exports.up = (pgm) => {
     owner: {
       type: 'VARCHAR(50)',
       notNull: true,
+    },
+    date: {
+      type: 'TEXT',
+      notNull: true,
+    },
+  });
+
+  pgm.addConstraint('comments', 'fk_comments.thread_id_threads.id', {
+    foreignKeys: {
+      columns: 'thread_id',
+      references: 'threads(id)',
+      onDelete: 'CASCADE',
     },
   });
 
