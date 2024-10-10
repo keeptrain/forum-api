@@ -1,0 +1,5 @@
+class GetDetailThread {
+  constructor(payload) {
+
+  }
+}
