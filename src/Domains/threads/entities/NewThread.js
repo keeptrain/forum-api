@@ -15,10 +15,6 @@ class NewThread {
     if (typeof title !== 'string' || typeof body !== 'string') {
       throw new Error('NEW_THREAD.PROPERTY_HAVE_WRONG_DATA_TYPE');
     }
-
-    if (title.length > 50) {
-      throw new Error('NEW_THREAD.TITLE_EXCEED_CHAR_LIMIT');
-    }
   }
 }
 
