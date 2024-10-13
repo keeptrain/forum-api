@@ -30,5 +30,4 @@ class ThreadDetails {
     }
   }
 }
-
 module.exports = ThreadDetails;
