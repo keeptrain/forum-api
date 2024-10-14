@@ -9,7 +9,7 @@ class ThreadDetailsUseCase {
     const threadDetail = await this._threadRepository.getThreadById(useCaseThread);
     // const thread = new ThreadDetails(useCaseThread);
 
-      // get
+    // get
     return {
       ...threadDetail,
     };
