@@ -1,9 +1,11 @@
 class ThreadDetails {
   constructor(payload) {
     this._verifyPayload(payload);
+
     const {
       id, title, body, date, username, comments,
     } = payload;
+
     this.id = id;
     this.title = title;
     this.body = body;

@@ -9,8 +9,8 @@ const routes = (handler) => ([
   },
   {
     method: 'GET',
-    path: '/threads/threadId',
-    handler: handler.getThreadDetailHandler,
+    path: '/threads/{threadId}',
+    handler: handler.getThreadByIdHandler,
   },
   /* {
     method: 'POST',
@@ -24,11 +24,6 @@ const routes = (handler) => ([
     method: 'DELETE',
     path: '/threads/{threadId}/comments/commentId',
     handler: handler.deleteThreadCommentsHandler,
-  },
-  {
-    method: 'GET',
-    path: '/threads/threadId',
-    handler: handler.getThreadDetailHandler,
   }, */
 ]);
 
