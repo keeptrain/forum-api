@@ -13,6 +13,7 @@ describe('a NewThread entities', () => {
     const payload = {
       title: 'abc',
       body: 123,
+      owner: 'user-blalbla',
     };
 
     expect(() => new NewThread(payload)).toThrowError('NEW_THREAD.PROPERTY_HAVE_WRONG_DATA_TYPE');
@@ -22,6 +23,7 @@ describe('a NewThread entities', () => {
     const payload = {
       title: 'abc',
       body: 'abc',
+      owner: 'user-blabla',
     };
 
     const newThread = new NewThread(payload);

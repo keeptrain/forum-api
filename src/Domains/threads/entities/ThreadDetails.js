@@ -3,7 +3,7 @@ class ThreadDetails {
     this._verifyPayload(payload);
 
     const {
-      id, title, body, date, username, comments,
+      id, title, body, date, username,
     } = payload;
 
     this.id = id;
@@ -11,7 +11,6 @@ class ThreadDetails {
     this.body = body;
     this.date = date;
     this.username = username;
-    this.comments = comments;
   }
 
   _verifyPayload({
@@ -26,7 +25,6 @@ class ThreadDetails {
         || typeof body !== 'string'
         || typeof date !== 'string'
         || typeof username !== 'string'
-        || !Array.isArray(comments)
     ) {
       throw new Error('THREAD_DETAILS.PROPERTY_HAVE_WRONG_DATA_TYPE');
     }

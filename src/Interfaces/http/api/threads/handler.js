@@ -10,30 +10,15 @@ class ThreadsHandler {
   }
 
   async postThreadHandler(request, h) {
-    const addThreadUseCase = this._container.getInstance(AddThreadUseCase.name);
     const { id: owner } = request.auth.credentials;
-    const addedThread = await addThreadUseCase.execute(request.payload, owner);
+    const { title, body } = request.payload;
+    const addThreadUseCase = this._container.getInstance(AddThreadUseCase.name);
+    const addedThread = await addThreadUseCase.execute({ title, body, owner });
 
     const response = h.response({
       status: 'success',
       data: {
         addedThread,
-      },
-    });
-    response.code(201);
-    return response;
-  }
-
-  async postThreadCommentsHandler(request, h) {
-    const { threadId } = request.params;
-    const { id: owner } = request.auth.credentials;
-    const addThreadUseCase = this._container.getInstance(AddThreadUseCase.name);
-    const addedComment = await addThreadUseCase.execute(request.payload, threadId, owner);
-
-    const response = h.response({
-      status: 'success',
-      data: {
-        addedComment,
       },
     });
     response.code(201);
