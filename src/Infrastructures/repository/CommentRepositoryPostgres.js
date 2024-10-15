@@ -1,5 +1,7 @@
 const CommentRepository = require('../../Domains/comments/CommentRepository');
 const AddedComment = require('../../Domains/comments/entities/AddedComment');
+const NotFoundError = require('../../Commons/exceptions/NotFoundError');
+const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
 
 class CommentRepositoryPostgres extends CommentRepository {
   constructor(pool, idGenerator) {
@@ -8,15 +10,15 @@ class CommentRepositoryPostgres extends CommentRepository {
     this._idGenerator = idGenerator;
   }
 
-  async addComment(threadId, commentContent, owner) {
-    const { content } = commentContent;
+  async addComment(newComment) {
+    const { thread_id, content, owner } = newComment;
     const id = `comment-${this._idGenerator()}`;
     const date = new Date();
     const isDelete = false;
 
     const query = {
       text: 'INSERT INTO comments VALUES($1, $2, $3, $4, $5, $6) RETURNING id, content, owner',
-      values: [id, threadId, content, owner, date, isDelete],
+      values: [id, thread_id, content, owner, date, isDelete],
     };
 
     const result = await this._pool.query(query);
@@ -34,6 +36,41 @@ class CommentRepositoryPostgres extends CommentRepository {
     const result = await this._pool.query(query);
 
     return result.rows;
+  }
+
+  async deleteCommentById(id) {
+    const query = {
+      text: 'UPDATE comments SET is_delete = true WHERE id = $1',
+      values: [id],
+    };
+
+    await this._pool.query(query);
+  }
+
+  async checkCommentAvailability(id) {
+    const query = {
+      text: 'SELECT id, owner FROM comments WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('komentar tidak ditemukan di database');
+    }
+  }
+
+  async verifyCommentOwner(id, owner) {
+    const query = {
+      text: 'SELECT id FROM comments WHERE id = $1 AND owner = $2',
+      values: [id, owner],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new AuthorizationError('user ini tidak di izinkan untuk menghapus komentar');
+    }
   }
 }
 
