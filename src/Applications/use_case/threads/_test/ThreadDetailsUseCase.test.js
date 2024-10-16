@@ -1,7 +1,7 @@
 const ThreadDetailsUseCase = require('../ThreadDetailsUseCase');
 const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
 const CommentRepository = require('../../../../Domains/comments/CommentRepository');
-const ThreadDetails = require('../../../../Domains/threads/entities/ThreadDetails');
+// const ThreadDetails = require('../../../../Domains/threads/entities/ThreadDetails');
 
 describe('ThreadDetailsUseCase', () => {
   it('should orchestrating the details thread action correctly', async () => {

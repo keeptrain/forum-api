@@ -7,7 +7,6 @@ describe('a ThreadDetails entities', () => {
       body: 'test body',
       date: 'test date',
       username: 'usertest',
-      comments: [],
     };
 
     expect(() => new ThreadDetails(payload)).toThrowError('THREAD_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
@@ -20,7 +19,6 @@ describe('a ThreadDetails entities', () => {
       body: 'test body',
       date: 'test date',
       username: 'usertest',
-      comments: [],
     };
 
     expect(() => new ThreadDetails(payload)).toThrowError('THREAD_DETAILS.PROPERTY_HAVE_WRONG_DATA_TYPE');
@@ -33,7 +31,6 @@ describe('a ThreadDetails entities', () => {
       body: 'test body',
       date: 'test date',
       username: 'usertest',
-      comments: [],
     };
 
     const threadDetails = new ThreadDetails(payload);
@@ -43,6 +40,5 @@ describe('a ThreadDetails entities', () => {
     expect((threadDetails.body)).toEqual(payload.body);
     expect((threadDetails.date)).toEqual(payload.date);
     expect((threadDetails.username)).toEqual(payload.username);
-    expect((threadDetails.comments)).toEqual(payload.comments);
   });
 });
