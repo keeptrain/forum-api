@@ -3,6 +3,7 @@ const DeleteCommentUseCase = require('../DeleteCommentUseCase');
 
 describe('DeleteCommentUseCase', () => {
   it('should orchestrating the delete comment action correctly', async () => {
+    // Arrange
     const useCasePayload = {
       id: 'comment-1',
       owner: 'owner-1',
@@ -10,7 +11,7 @@ describe('DeleteCommentUseCase', () => {
 
     const mockCommentRepository = new CommentRepository();
 
-    /** mocking needed function */
+    // Mocking
     mockCommentRepository.checkCommentAvailability = jest.fn()
       .mockResolvedValue();
     mockCommentRepository.verifyCommentOwner = jest.fn()
@@ -18,6 +19,7 @@ describe('DeleteCommentUseCase', () => {
     mockCommentRepository.deleteCommentById = jest.fn()
       .mockResolvedValue();
 
+    // Create the use case instace
     const deleteCommentUseCase = new DeleteCommentUseCase({
       commentRepository: mockCommentRepository,
     });
