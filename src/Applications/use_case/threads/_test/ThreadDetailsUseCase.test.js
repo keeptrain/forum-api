@@ -4,79 +4,69 @@ const CommentRepository = require('../../../../Domains/comments/CommentRepositor
 // const ThreadDetails = require('../../../../Domains/threads/entities/ThreadDetails');
 
 describe('ThreadDetailsUseCase', () => {
-  it('should orchestrating the details thread action correctly', async () => {
+  it('should orchestrate the thread details retrieval action correctly', async () => {
     // Arrange
-    const useCasePayload = 'thread-1';
-
-    const mockThread = {
-      id: useCasePayload,
-      title: 'this thread title',
-      body: 'this thread body',
-      date: '2024-10-15T10:55:55.672Z',
-      username: 'user-1',
+    const useCasePayload = 'thread-123';
+    const expectedThreadDetail = {
+      id: 'thread-123',
+      title: 'Thread Title',
+      body: 'Thread Body',
+      date: '2024-10-09T10:00:00.000Z',
+      username: 'user-001',
     };
-
-    const mockComments = [
+    const expectedComments = [
       {
         id: 'comment-1',
-        username: 'user-1',
-        date: '2024-10-15T11:55:55.672Z',
-        content: 'this comment',
-        is_deleted: false,
+        username: 'user-002',
+        date: '2024-10-09T10:30:00.000Z',
+        content: 'This is a comment',
+        is_delete: false,
       },
       {
         id: 'comment-2',
-        username: 'user-2',
-        date: '2024-10-15T12:55:55.672Z',
-        content: '**komentar telah dihapus**',
-        is_deleted: true,
+        username: 'user-003',
+        date: '2024-10-09T11:00:00.000Z',
+        content: 'This comment was deleted',
+        is_delete: true,
       },
     ];
 
-    const expectedThreadWithComments = {
-      id: useCasePayload,
-      title: 'this thread title',
-      body: 'this thread body',
-      date: '2024-10-15T10:55:55.672Z',
-      username: 'user-1',
-      comments: [
-        {
-          id: 'comment-1',
-          username: 'user-1',
-          date: '2024-10-15T11:55:55.672Z',
-          content: 'this comment',
-          is_deleted: false,
-        },
-        {
-          id: 'comment-2',
-          username: 'user-2',
-          date: '2024-10-15T12:55:55.672Z',
-          content: '**komentar telah dihapus**',
-          is_deleted: true,
-        },
-      ],
-    };
-
-    // Mocking the dependencies using proper domain repository classes
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
 
-    // Mocking methods from the repositories
-    mockThreadRepository.getThreadById = jest.fn().mockResolvedValue(mockThread);
-    mockCommentRepository.getCommentsByThreadId = jest.fn().mockResolvedValue(mockComments);
+    // Mock implementation
+    mockThreadRepository.getThreadById = jest.fn()
+      .mockResolvedValue(expectedThreadDetail);
+    mockCommentRepository.getCommentsByThreadId = jest.fn()
+      .mockResolvedValue(expectedComments);
 
-    // Creating an instance of GetThreadUseCase
-    const getThreadUseCase = new ThreadDetailsUseCase({
+    const threadDetailsUseCase = new ThreadDetailsUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
     });
 
-    // Act (run the use case)
-    const result = getThreadUseCase.execute(useCasePayload);
+    // Action
+    const result = await threadDetailsUseCase.execute(useCasePayload);
 
-    // Assert (ensure the function works as expected)
-    expect(mockThreadRepository.getThreadById).toHaveBeenCalledWith(useCasePayload.id);
-    expect(mockCommentRepository.getCommentsByThreadId).toHaveBeenCalledWith(useCasePayload.id);
-    expect(result).toEqual(expectedThreadWithComments);
+    // Assert
+    expect(mockThreadRepository.getThreadById).toBeCalledWith(useCasePayload);
+    expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith('thread-123');
+    expect(result).toEqual({
+      ...expectedThreadDetail,
+      comments: [
+        {
+          id: 'comment-1',
+          username: 'user-002',
+          date: '2024-10-09T10:30:00.000Z',
+          content: 'This is a comment',
+        },
+        {
+          id: 'comment-2',
+          username: 'user-003',
+          date: '2024-10-09T11:00:00.000Z',
+          content: '**komentar telah dihapus**',
+        },
+      ],
+    });
   });
 });
