@@ -11,7 +11,7 @@ const AuthorizationError = require('../../../Commons/exceptions/AuthorizationErr
 describe('CommentRepository postgres', () => {
   beforeAll(async () => {
     await UsersTableTestHelper.addUser({ username: 'commentpostgres' });
-    await ThreadsTableTestHelper.addThread({ id: 'thread-testcomment', username: 'commentpostgres' });
+    await ThreadsTableTestHelper.addThread({ id: 'thread-testcomment' });
   });
 
   afterEach(async () => {
@@ -158,47 +158,51 @@ describe('CommentRepository postgres', () => {
         .not
         .toThrowError(NotFoundError);
     });
+  });
 
-    describe('verifyCommentOwner function', () => {
-      it('should throw AuthorizationError when comment is wrong', async () => {
-        // Arrange
-        const newComment = new NewComment({
-          thread_id: 'thread-testcomment',
-          content: 'this is content',
-          owner: 'user-123',
-        });
-        const fakeIdGenerator = () => '123'; // stub!
-        const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
-
-        // Action
-        await commentRepositoryPostgres.addComment(newComment);
-
-        // Assert
-        await expect(commentRepositoryPostgres.verifyCommentOwner('comment-123', 'user-456'))
-          .rejects
-          .toThrowError(AuthorizationError);
+  describe('verifyCommentOwner function', () => {
+    it('should throw AuthorizationError when comment is wrong owner', async () => {
+      // Arrange
+      const newComment = new NewComment({
+        thread_id: 'thread-testcomment',
+        content: 'this is content',
+        owner: 'user-123',
       });
 
-      it('should not throw AuthorizationError when comment owner is valid', async () => {
-        // Arrange
-        const newComment = new NewComment({
-          thread_id: 'thread-testcomment',
-          content: 'this is content',
-          owner: 'user-123',
-        });
+      const fakeIdGenerator = () => '123'; // stub!
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
-        const fakeIdGenerator = () => '456'; // stub!
-        const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
-
-        // Action
-        await commentRepositoryPostgres.addComment(newComment);
-
-        // Assert
-        await expect(commentRepositoryPostgres.verifyCommentOwner('comment-456', 'user-123'))
-          .resolves
-          .not
-          .toThrowError(AuthorizationError);
+      // Action
+      await CommentsTableTestHelper.addComment({
+        thread_id: newComment.thread_id,
+        owner: newComment.owner,
       });
+
+      // Assert
+      await expect(commentRepositoryPostgres.verifyCommentOwner('comment-123', 'user-456'))
+        .rejects
+        .toThrowError(AuthorizationError);
+    });
+
+    it('should not throw AuthorizationError when comment owner is valid', async () => {
+      // Arrange
+      const newComment = new NewComment({
+        thread_id: 'thread-testcomment',
+        content: 'this is content',
+        owner: 'user-123',
+      });
+
+      const fakeIdGenerator = () => '456'; // stub!
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
+
+      // Action
+      await commentRepositoryPostgres.addComment(newComment);
+
+      // Assert
+      await expect(commentRepositoryPostgres.verifyCommentOwner('comment-456', 'user-123'))
+        .resolves
+        .not
+        .toThrowError(AuthorizationError);
     });
   });
 });
