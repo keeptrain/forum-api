@@ -24,7 +24,7 @@ describe('AddCommentUseCase', () => {
 
     // Mocking
     mockThreadRepository.verifyAvailableThread = jest.fn()
-      .mockImplementation(() => Promise.resolve(useCasePayload));
+      .mockImplementation(() => Promise.resolve());
 
     mockCommentRepository.addComment = jest.fn()
       .mockImplementation(() => Promise.resolve(mockComment));
@@ -45,8 +45,10 @@ describe('AddCommentUseCase', () => {
       owner: useCasePayload.owner,
     }));
 
+    expect(mockThreadRepository.verifyAvailableThread).toHaveBeenCalledWith('thread-1');
+
     expect(mockCommentRepository.addComment).toBeCalledWith(new NewComment({
-      thread_id: useCasePayload.thread_id,
+      thread_id: 'thread-1',
       content: useCasePayload.content,
       owner: useCasePayload.owner,
     }));

@@ -139,7 +139,7 @@ describe('ReplyRepository postgres', () => {
     });
   });
 
-  describe('checkReplyAvailability function', () => {
+  describe('verifyReplyAvailability function', () => {
     it('should throw NotFoundError when reply is not found', async () => {
       // Arrange
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});

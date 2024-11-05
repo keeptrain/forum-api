@@ -8,7 +8,7 @@ describe('ThreadDetailsUseCase', () => {
   it('should orchestrate the thread details retrieval action correctly', async () => {
     // Arrange
     const useCasePayload = 'thread-123';
-    const expectedThreadDetail = {
+    const expectedThreads = {
       id: 'thread-123',
       title: 'Thread Title',
       body: 'Thread Body',
@@ -56,7 +56,7 @@ describe('ThreadDetailsUseCase', () => {
 
     // Mock implementation
     mockThreadRepository.getThreadById = jest.fn()
-      .mockResolvedValue(expectedThreadDetail);
+      .mockResolvedValue(expectedThreads);
     mockCommentRepository.getCommentsByThreadId = jest.fn()
       .mockResolvedValue(expectedComments);
     mockReplyRepository.getRepliesOnCommentById = jest.fn()
@@ -69,13 +69,18 @@ describe('ThreadDetailsUseCase', () => {
     });
 
     // Action
-    const result = await threadDetailsUseCase.execute(useCasePayload);
+    const threads = await threadDetailsUseCase.execute(useCasePayload);
 
     // Assert
-    expect(mockThreadRepository.getThreadById).toBeCalledWith(useCasePayload);
+    expect(mockThreadRepository.getThreadById).toBeCalledWith('thread-123');
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith('thread-123');
-    expect(result).toEqual({
-      ...expectedThreadDetail,
+    expect(mockReplyRepository.getRepliesOnCommentById).toBeCalledWith(['comment-1', 'comment-2']);
+    expect(threads).toStrictEqual({
+      id: 'thread-123',
+      title: 'Thread Title',
+      body: 'Thread Body',
+      date: '2024-10-09T10:00:00.000Z',
+      username: 'user-001',
       comments: [
         {
           id: 'comment-1',

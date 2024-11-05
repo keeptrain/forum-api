@@ -32,7 +32,7 @@ describe('a NewComment entities', () => {
     const newComment = new NewComment(payload);
 
     // Assert
-    expect(newComment.id).toEqual(payload.id);
+    expect(newComment.thread_id).toEqual(payload.thread_id);
     expect(newComment.content).toEqual(payload.content);
     expect(newComment.owner).toEqual(payload.owner);
   });

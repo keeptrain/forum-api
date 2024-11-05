@@ -100,7 +100,7 @@ describe('CommentRepository postgres', () => {
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action & Assert
-      await expect(commentRepositoryPostgres.checkCommentAvailability('comment-aiueo'))
+      await expect(commentRepositoryPostgres.verifyCommentAvailability('comment-aiueo'))
         .rejects
         .toThrowError(NotFoundError);
     });
@@ -132,13 +132,13 @@ describe('CommentRepository postgres', () => {
     });
   });
 
-  describe('checkCommentAvailability function', () => {
+  describe('verifyCommentAvailability function', () => {
     it('should throw NotFoundError when comment is not found', async () => {
       // Arrange
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action & Assert
-      await expect(commentRepositoryPostgres.checkCommentAvailability('comment-aiueo'))
+      await expect(commentRepositoryPostgres.verifyCommentAvailability('comment-aiueo'))
         .rejects
         .toThrowError(NotFoundError);
     });
@@ -153,7 +153,7 @@ describe('CommentRepository postgres', () => {
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action & Assert
-      await expect(commentRepositoryPostgres.checkCommentAvailability('comment-123'))
+      await expect(commentRepositoryPostgres.verifyCommentAvailability('comment-123'))
         .resolves
         .not
         .toThrowError(NotFoundError);
