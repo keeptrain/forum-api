@@ -77,15 +77,13 @@ describe('ThreadRepository postgres', () => {
     });
 
     it('should return get thread by id correctly when thread exists', async () => {
-      const mockDate = new Date();
-
       // Arrange
       await ThreadsTableTestHelper.addThread({
         id: 'thread-456',
         title: 'this is title get thread',
         body: 'this is body get thread',
         owner: 'user-123',
-        date: mockDate.toISOString(),
+        date: '2023-11-30T00:00:00.000Z',
       });
 
       const fakeIdGenerator = () => '456'; // stub!
@@ -100,7 +98,7 @@ describe('ThreadRepository postgres', () => {
           id: 'thread-456',
           title: 'this is title get thread',
           body: 'this is body get thread',
-          date: mockDate.toISOString(),
+          date: '2023-11-30T00:00:00.000Z',
           username: 'threadpostgres-test',
         }),
       );

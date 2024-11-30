@@ -72,8 +72,6 @@ describe('ReplyRepository postgres', () => {
 
   describe('getRepliesOnCommentById function', () => {
     it('should return get replies by comment id correctly when reply exists', async () => {
-      const mockDate = new Date();
-
       // Arrange
       await RepliesTableTestHelper.addReply({
         id: 'reply-456',
@@ -92,7 +90,7 @@ describe('ReplyRepository postgres', () => {
       expect(reply[0]).toEqual({
         id: 'reply-456',
         username: 'replypostgres',
-        date: mockDate.toISOString(),
+        date: '2024-11-30T00:00:00.000Z',
         content: 'this is get reply content',
         is_delete: false,
         comment_id: 'comment-testreply',
@@ -111,7 +109,6 @@ describe('ReplyRepository postgres', () => {
     });
 
     it('should perform a soft delete and update column is_delete to true', async () => {
-      const mockDate = new Date();
       // Arrange
       await RepliesTableTestHelper.addReply({
         id: 'reply-789',
@@ -132,7 +129,7 @@ describe('ReplyRepository postgres', () => {
         thread_id: 'thread-testreply',
         comment_id: 'comment-testreply',
         owner: 'user-123',
-        date: mockDate.toISOString(),
+        date: '2024-11-30T00:00:00.000Z',
         content: 'this is delete reply content',
         is_delete: true,
       });
