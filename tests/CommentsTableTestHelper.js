@@ -6,7 +6,7 @@ const CommentsTableTestHelper = {
     thread_id = 'thread-123',
     content = 'this is content',
     owner = 'user-123',
-    date = new Date().toISOString(),
+    date = new Date('2024-11-30T00:00:00.000Z').toISOString(),
     is_delete = false,
   }) {
     const query = {

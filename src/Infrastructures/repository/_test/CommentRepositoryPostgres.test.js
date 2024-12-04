@@ -68,8 +68,6 @@ describe('CommentRepository postgres', () => {
 
   describe('getCommentByThreadId function', () => {
     it('should return get comment by thread id correctly when comment exists', async () => {
-      const mockDate = new Date();
-
       // Arrange
       await CommentsTableTestHelper.addComment({
         id: 'comment-456',
@@ -87,7 +85,7 @@ describe('CommentRepository postgres', () => {
       expect(comment[0]).toEqual({
         id: 'comment-456',
         username: 'commentpostgres',
-        date: mockDate.toISOString(),
+        date: '2024-11-30T00:00:00.000Z',
         content: 'this is get comment content',
         is_delete: false,
       });
@@ -106,7 +104,6 @@ describe('CommentRepository postgres', () => {
     });
 
     it('should perform a soft delete and update column is_delete to true', async () => {
-      const mockDate = new Date();
       // Arrange
       await CommentsTableTestHelper.addComment({
         id: 'comment-789',
@@ -125,7 +122,7 @@ describe('CommentRepository postgres', () => {
         id: 'comment-789',
         thread_id: 'thread-testcomment',
         owner: 'user-123',
-        date: mockDate.toISOString(),
+        date: '2024-11-30T00:00:00.000Z',
         content: 'this is delete comment content',
         is_delete: true,
       });
