@@ -38,6 +38,11 @@ DomainErrorTranslator._directories = {
 
   'NEW_REPLY.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat reply baru karena properti yang dibutuhkan tidak lengkap'),
   'NEW_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat reply baru karena tipe data tidak sesuai'),
+
+  'NEW_LIKE_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat like comment baru karena properti yang dibutuhkan tidak lengkap'),
+  'NEW_LIKE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat like comment baru karena tipe data tidak sesuai'),
+  'DELETE_LIKE_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus mengirimkan id'),
+  'DELETE_LIKE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat menghapus like comment karena tipe data tidak sesuai'),
 };
 
 module.exports = DomainErrorTranslator;
